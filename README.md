@@ -1,73 +1,70 @@
-# TalentScout Hiring Assistant 
+# TalentScout Hiring Assistant
 
-A Streamlit-based chatbot that simulates an AI-powered Hiring Assistant. It collects candidate information and generates technical interview questions based on their tech stack — designed to showcase LLM usage principles even without live API access.
-
----
+An interactive Streamlit-based AI Hiring Assistant that collects candidate information and generates tailored technical interview questions based on the candidate's declared tech stack.
 
 ## Features
 
-- Collects candidate details (name, email, phone, experience, etc.)
-- Generates skill-specific technical questions
-- Clean and interactive Streamlit UI
-- Uses static question logic to simulate LLM behavior
-- Reset and reuse the assistant for multiple candidates
+- Simple and intuitive UI built with **Streamlit**
+- Collects essential candidate details:
+  - Full Name
+  - Email Address
+  - Phone Number
+  - Years of Experience
+  - Desired Position(s)
+  - Current Location
+  - Tech Stack
+- Generates **3–5 technology-specific questions** per skill
+- Simulated conversation with:
+  - **Follow-up interaction support**
+  - **Conversation history tracking**
+- Allows candidate to **exit the interview** using keywords like `exit`, `quit`, or `bye`
+- Clean and modular code with separation of logic (`app.py`, `prompts.py`, `llm_replicate.py`)
 
----
+## Note on LLM Usage
 
-## Tech Stack
+Due to lack of working API keys or credits for services like OpenAI, HuggingFace, and Replicate, this project does **not use a live LLM**.
 
-- **Python 3.10+**
-- **Streamlit** for frontend
-- **Prompt Simulation Logic** in Python
-- *Originally designed for integration with Hugging Face, OpenAI, or Replicate models*
+Instead, the backend uses:
+- Static or rule-based prompt-response logic
+- Pre-engineered responses per tech stack keyword
+- Simulated follow-up using templated logic
 
----
-
-## Note on LLM Integration
-
-The original assignment objective was to use an LLM (like Mistral or LLaMA) to generate contextual interview questions.
-
-> However, due to **limited access to gated APIs** (e.g., Hugging Face, Replicate) and **lack of active API credits**, I was unable to connect to a real hosted LLM model.
-
-### Workaround Implemented
-
-To still demonstrate prompt design and project flow:
-- I implemented a **static prompt-response simulation**
-- The questions resemble what a real LLM would generate
-- All logic is modular, so APIs can be easily plugged in when available
-
----
-
-## How to Run
-
-1. Make sure dependencies are installed:
-    ```bash
-    pip install streamlit
-    ```
-
-2. Run the app:
-    ```bash
-    streamlit run app.py
-    ```
-
----
+This fallback approach still demonstrates key capabilities of prompt handling, session state, and conversational structure, without depending on paid model APIs.
 
 ## File Structure
 
 
 ├── app.py # Main Streamlit application
 ├── prompts.py # Prompt construction logic
-├── llm_replicate.py # Simulated LLM response logic (no API required)
+├── question_engine.py # Simulated LLM response logic (no API required)
 ├── README.md # Documentation
 
 
 ---
+## Install dependencies:
+pip install -r requirements.txt
+
+## Run the Streamlit app:
+streamlit run app.py
+
+ ### Assignment Goals Fulfilled
+ Candidate info collection
+
+ Tech-based question generation
+
+ Exit keyword detection
+
+ Follow-up handling and context memory
+
+ Graceful session close
+
+ README and modular file structure
 
 ## Sample Run
 
 ### Input:
-- Name: Jane Doe  
-- Email: jane@example.com  
+- Name: Saikat Jana  
+- Email: jana@example.com  
 - Position: Data Analyst  
 - Tech Stack: Python, SQL
 
@@ -94,8 +91,6 @@ What is the difference between WHERE and HAVING?
 ## Future Improvements
 
 - Switch to real LLM APIs once access is available (e.g., OpenAI, Replicate, Hugging Face)
-- Add PDF or CSV export of interview questions
-- Add multilingual or sentiment-aware features
 
 ---
 
