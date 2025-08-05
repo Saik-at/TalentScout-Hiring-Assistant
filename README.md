@@ -1,102 +1,139 @@
-# TalentScout Hiring Assistant
+#  IPL MCP Server — Natural Language Cricket Analytics
 
-An interactive Streamlit-based AI Hiring Assistant that collects candidate information and generates tailored technical interview questions based on the candidate's declared tech stack.
+This project implements an **MCP (Model Context Protocol) Server** that answers natural language questions about IPL matches using structured match data. It supports integration with **Claude Desktop** and provides both CLI and web-based testing.
 
-## Features
+---
 
-- Simple and intuitive UI built with **Streamlit**
-- Collects essential candidate details:
-  - Full Name
-  - Email Address
-  - Phone Number
-  - Years of Experience
-  - Desired Position(s)
-  - Current Location
-  - Tech Stack
-- Generates **3–5 technology-specific questions** per skill
-- Simulated conversation with:
-  - **Follow-up interaction support**
-  - **Conversation history tracking**
-- Allows candidate to **exit the interview** using keywords like `exit`, `quit`, or `bye`
-- Clean and modular code with separation of logic (`app.py`, `prompts.py`, `llm_replicate.py`)
+##  Features
 
-## Note on LLM Usage
+- Parse JSON IPL match data from [cricsheet.org](https://cricsheet.org/)
+- Store structured data in **SQLite** (SQL only, no NoSQL)
+- Query match, player, and performance info using natural language
+- MCP server built with **Flask**
+- Supports integration with **Claude Desktop**
+- Includes CLI tester and web-based interface
 
-Due to lack of working API keys or credits for services like OpenAI, HuggingFace, and Replicate, this project does **not use a live LLM**.
+---
 
-Instead, the backend uses:
-- Static or rule-based prompt-response logic
-- Pre-engineered responses per tech stack keyword
-- Simulated follow-up using templated logic
+##  Folder Structure
 
-This fallback approach still demonstrates key capabilities of prompt handling, session state, and conversational structure, without depending on paid model APIs.
-
-## File Structure
-
-
-├── app.py # Main Streamlit application
-├── prompts.py # Prompt construction logic
-├── question_engine.py # Simulated LLM response logic (no API required)
-├── README.md # Documentation
+assignment/
+├── data/ # JSON IPL match files (min 5)
+├── db/ # SQLite DB with match + delivery tables
+├── queries/ # Natural language to SQL mapping
+│ └── query_map.py
+├── scripts/
+│ └── parse_and_load.py # Script to parse JSON and populate DB
+├── server/
+│ └── app.py # Flask MCP server
+├── test_client.py # CLI tool for testing questions
+├── requirements.txt # Python dependencies
+└── README.md # This file
 
 
 ---
-## Install dependencies:
+
+## ⚙️ Installation
+
+### 1. Clone the Repository
+
+In terminal:
+git clone https://github.com/your-username/ipl-mcp-server.git
+cd ipl-mcp-server
+
+### 2. Install Requirements
+
 pip install -r requirements.txt
 
-## Run the Streamlit app:
-streamlit run app.py
+### 3. Add IPL Match Files
+Download at least 5 JSON match files from:
 
- ### Assignment Goals Fulfilled
- Candidate info collection
+https://cricsheet.org/matches/
 
- Tech-based question generation
+Place them in the data/ folder.
 
- Exit keyword detection
+### 4. Load the Data
+Run the parser script to populate the SQLite database:
 
- Follow-up handling and context memory
+python scripts/parse_and_load.py
 
- Graceful session close
+This creates db/ipl_matches.sqlite and loads match + delivery data.
 
- README and modular file structure
+### 5. Run the MCP Server
 
-## Sample Run
+python server/app.py
 
-### Input:
-- Name: Saikat Jana  
-- Email: jana@example.com  
-- Position: Data Analyst  
-- Tech Stack: Python, SQL
+Server will run at:
 
-### Output:
-Questions for Python:
+http://127.0.0.1:5000
 
-What are Python's key data types?
+### 6. Test Questions (Natural Language)
 
-Explain the difference between a list and a tuple.
+Type in terminal:
+python test_client.py
 
-What are decorators and how are they used?
-...
-
-Questions for SQL:
-
-Explain different types of JOINs in SQL.
-
-What is the difference between WHERE and HAVING?
-...
+You will get a menu of supported questions. Choose a number to test.
 
 
----
+### 7. Sample Questions Supported
+Show me all matches in the dataset
 
-## Future Improvements
+Which team won the most matches?
 
-- Switch to real LLM APIs once access is available (e.g., OpenAI, Replicate, Hugging Face)
+What was the highest total score?
 
----
+Show matches played in Mumbai
 
-## Author
+Who scored the most runs across all matches?
 
-Submitted as part of an AI/ML Internship Assignment.
+Which bowler took the most wickets?
 
-This project demonstrates LLM application structure, prompt engineering, and fallback planning even when live inference is not available.
+Show me Virat Kohli's batting stats
 
+What’s the average first innings score?
+
+Which venue has the highest scoring matches?
+
+Show me all centuries scored
+
+More queries can easily be added via query_map.py
+
+### 8. Claude Desktop Integration
+Claude should connect to this server via:
+
+Endpoint: http://localhost:5000/ask
+
+Method: POST
+
+Content-Type: application/json
+
+Payload Format:
+
+{
+  "question": "Which team won the most matches?"
+}
+
+The server will respond with structured results:
+
+{
+  "results": [
+    { "winner": "MI", "wins": 5 }
+  ]
+}
+
+
+### 9. Submission Instructions
+ Include ≥5 IPL JSON files in data/
+
+ Ensure SQLite DB is built using parse_and_load.py
+
+ Confirm app.py runs and answers sample questions
+
+ Include test_client.py and test_web.html
+
+ Document Claude integration in this README
+
+### 10. Thanks & Credits
+Match data from Cricsheet, licensed under Creative Commons Attribution 3.0.
+
+Built with 💡, 🐍 Python, and 🏏 IPL love.
